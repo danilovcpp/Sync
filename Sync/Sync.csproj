@@ -20,6 +20,20 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ClientApp\components\Settings.tsx" />
+    <None Remove="ClientApp\components\Sync.tsx" />
+    <None Remove="ClientApp\components\SyncModal.tsx" />
+    <None Remove="ClientApp\components\TableView.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\Settings.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\Sync.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\SyncModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\TableView.tsx" />
+  </ItemGroup>
+
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
