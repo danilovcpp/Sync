@@ -1,20 +1,20 @@
 ﻿import * as React from 'react';
-import { Modal, Button, Table, Pager, Glyphicon, Alert } from 'react-bootstrap';
+import { Modal, Button, Table, Glyphicon, Alert, Pager } from 'react-bootstrap';
 
-interface PullModalProps {
+interface PushModalProps {
 	showModal: boolean;
 	onHide: () => void;
 }
 
-export class PullModal extends React.Component<PullModalProps, {}> {
+export class PushModal extends React.Component<PushModalProps, {}> {
 	public render() {
 		return (
 			<Modal show={this.props.showModal} onHide={this.props.onHide} bsSize="lg">
 				<Modal.Header closeButton>
-					<Modal.Title>Pull log</Modal.Title>
+					<Modal.Title>Push log</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Alert bsStyle="warning">You have <strong>10</strong> changes behind master. Do you really want to <strong>pull</strong> changes?</Alert>
+					<Alert bsStyle="warning">You have <strong>5</strong> changes ahead master. Do you really want to <strong>push</strong> changes?</Alert>
 					<Table hover striped bordered condensed>
 						<thead>
 							<tr>
@@ -55,36 +55,6 @@ export class PullModal extends React.Component<PullModalProps, {}> {
 								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
 								<td>{`{"name": "john smith"}`}</td>
 							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
 						</tbody>
 					</Table>
 					<Pager>
@@ -94,7 +64,7 @@ export class PullModal extends React.Component<PullModalProps, {}> {
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.props.onHide}><Glyphicon glyph="ban-circle" /> Close</Button>
-					<Button bsStyle="success"><Glyphicon glyph="save" /> Pull & Apply changes</Button>
+					<Button bsStyle="success"><Glyphicon glyph="arrow-up" /> Confirm push</Button>
 				</Modal.Footer>
 			</Modal>
 		)

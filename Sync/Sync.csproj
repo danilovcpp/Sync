@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\History.tsx" />
+    <None Remove="ClientApp\components\PullModal.tsx" />
+    <None Remove="ClientApp\components\PushModal.tsx" />
+    <None Remove="ClientApp\components\ResolveModal.tsx" />
     <None Remove="ClientApp\components\Settings.tsx" />
     <None Remove="ClientApp\components\Sync.tsx" />
     <None Remove="ClientApp\components\SyncModal.tsx" />
@@ -28,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\History.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\PullModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\PushModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\ResolveModal.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Settings.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Sync.tsx" />
     <TypeScriptCompile Include="ClientApp\components\SyncModal.tsx" />

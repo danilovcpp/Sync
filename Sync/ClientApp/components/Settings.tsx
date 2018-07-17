@@ -2,6 +2,7 @@
 import { RouteComponentProps } from 'react-router';
 import { Tabs, Tab } from 'react-bootstrap';
 import { Sync } from './Sync';
+import { History } from './History';
 
 export default class Settings extends React.Component<RouteComponentProps<{}>, {}> {
 	public render() {
@@ -11,7 +12,7 @@ export default class Settings extends React.Component<RouteComponentProps<{}>, {
 					<Sync />
 				</Tab>
 				<Tab eventKey={2} title="History">
-					History
+					<History />
 				</Tab>
 			</Tabs>
 		)
