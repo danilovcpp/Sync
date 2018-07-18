@@ -1,9 +1,11 @@
 ﻿import * as React from 'react';
 import { Modal, Button, Form, FormGroup, Col, FormControl, Checkbox, ControlLabel, Glyphicon, InputGroup, Alert, DropdownButton, MenuItem, ButtonToolbar } from 'react-bootstrap';
+import { SyncNode } from '../models/SyncNode';
 
 interface SyncModalProps {
 	showModal: boolean;
 	onHide: () => void;
+	onAdd: (node: SyncNode) => void;
 }
 
 interface SyncModalState {
@@ -25,7 +27,6 @@ export class SyncModal extends React.Component<SyncModalProps, SyncModalState> {
 	}
 
 	private handleClick = () => {
-
 		if (this.state.host === "http://rdev.redoc.ru")
 			this.setState({ step: 3 });
 		else if (this.state.host === "http://rdev1.redoc.ru")
@@ -175,7 +176,7 @@ export class SyncModal extends React.Component<SyncModalProps, SyncModalState> {
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={this.props.onHide}><Glyphicon glyph="ban-circle" /> Close</Button>
-					<Button bsStyle="success"><Glyphicon glyph="floppy-disk" /> Save node</Button>
+					<Button bsStyle="success" onClick={() => { this.props.onAdd({ id: 1, host: this.state.host, table: "component" }); this.props.onHide(); }}><Glyphicon glyph="floppy-disk" /> Save node</Button>
 				</Modal.Footer>
 			</Modal>
 		)

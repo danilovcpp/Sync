@@ -4,6 +4,7 @@ import { SyncModal } from './SyncModal';
 import { PullModal } from './PullModal';
 import { PushModal } from './PushModal';
 import { ResolveModal } from './ResolveModal';
+import { SyncNode } from '../models/SyncNode';
 
 interface SyncState {
 	isMaster: boolean;
@@ -11,8 +12,10 @@ interface SyncState {
 	showPullModal: boolean;
 	showPushModal: boolean;
 	showResolveModal: boolean;
-}
 
+	nodes: SyncNode[];
+	lastCommit: string;
+}
 
 export class Sync extends React.Component<{}, SyncState> {
 	constructor() {
@@ -22,12 +25,50 @@ export class Sync extends React.Component<{}, SyncState> {
 			showSyncModal: false,
 			showPullModal: false,
 			showPushModal: false,
-			showResolveModal: false
+			showResolveModal: false,
+			nodes: [],
+			lastCommit: ""
 		}
 	}
 
 	private handleMasterChange = (event: any) => {
 		this.setState({ isMaster: !this.state.isMaster });
+	}
+
+	private handleAddNode = (node: SyncNode) => {
+		var nodes = this.state.nodes;
+		nodes.push(node);
+		this.setState({ nodes: nodes });
+	}
+
+	private handleFetch = (node: SyncNode) => {
+		var url = node.commit == null ? `${node.host}/sync/component` : `${node.host}/sync/component/${node.commit}`;
+		fetch(url)
+			.then(data => data.json())
+			.then(data => {
+				console.log(data);
+
+				var last = node.commit;
+
+				node.pullCount = data.length;
+				node.commit = data[data.length - 1].recid;
+				node.historyRecords = data;
+				this.setState({ nodes: [node], lastCommit: last! });
+			});
+	}
+
+	private handlePull = (node: SyncNode) => {
+		fetch(`sync/component/push`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(node.historyRecords)
+		})
+			.then(data => {
+				console.log(data);
+				//node.commit = node.historyRecords![node.historyRecords!.length - 1].recid;
+				node.pullCount = undefined;
+				this.setState({ nodes: [node] });
+			});
 	}
 
 	public render() {
@@ -54,6 +95,31 @@ export class Sync extends React.Component<{}, SyncState> {
 							</tr>
 						</thead>
 						<tbody>
+							{this.state.nodes.map(node => <tr>
+								<td>1</td>
+								<td><a href="rdev.redoc.ru">{node.host}</a></td>
+								<td>{node.table}</td>
+								<td>shallow</td>
+								<td>master</td>
+								<td>10 min</td>
+								<td>
+									<ButtonGroup>
+										<Button bsSize="xs" onClick={() => this.handleFetch(node)}><Glyphicon glyph="refresh" /> fetch</Button>
+										{node.pullCount &&
+											<Button bsSize="xs" onClick={() => { this.setState({ showPullModal: true }) }}><Glyphicon glyph="arrow-down" /> pull <Label bsStyle="success">+{node.pullCount}</Label></Button>
+										}
+									</ButtonGroup>
+								</td>
+								<td>
+									<ButtonGroup>
+										<Button bsSize="xs" onClick={() => this.setState({ showSyncModal: true })}><Glyphicon glyph="cog" /> edit</Button>
+										<Button bsSize="xs"><Glyphicon glyph="remove" /> remove</Button>
+									</ButtonGroup>
+								</td>
+							</tr>)}
+
+
+							{/*
 							<tr>
 								<td>1</td>
 								<td><a href="rdev.redoc.ru">http://rdev.redoc.ru</a></td>
@@ -232,12 +298,12 @@ export class Sync extends React.Component<{}, SyncState> {
 										<Button bsSize="xs"><Glyphicon glyph="remove" /> remove</Button>
 									</ButtonGroup>
 								</td>
-							</tr>
+							</tr>*/}
 						</tbody>
 					</Table>
 				</div>
-				<SyncModal showModal={this.state.showSyncModal} onHide={() => this.setState({ showSyncModal: false })} />
-				<PullModal showModal={this.state.showPullModal} onHide={() => this.setState({ showPullModal: false })} />
+				<SyncModal showModal={this.state.showSyncModal} onHide={() => this.setState({ showSyncModal: false })} onAdd={this.handleAddNode} />
+				<PullModal showModal={this.state.showPullModal} onHide={() => this.setState({ showPullModal: false })} historyRecords={[]} onApply={this.handlePull} node={this.state.nodes[0]} lastCommit={this.state.lastCommit} />
 				<PushModal showModal={this.state.showPushModal} onHide={() => this.setState({ showPushModal: false })} />
 				<ResolveModal showModal={this.state.showResolveModal} onHide={() => this.setState({ showResolveModal: false })} />
 			</div>

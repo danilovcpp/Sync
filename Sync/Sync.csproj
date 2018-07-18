@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,8 @@
     <None Remove="ClientApp\components\Sync.tsx" />
     <None Remove="ClientApp\components\SyncModal.tsx" />
     <None Remove="ClientApp\components\TableView.tsx" />
+    <None Remove="ClientApp\models\HistoryRecord.ts" />
+    <None Remove="ClientApp\models\SyncNode.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +43,8 @@
     <TypeScriptCompile Include="ClientApp\components\Sync.tsx" />
     <TypeScriptCompile Include="ClientApp\components\SyncModal.tsx" />
     <TypeScriptCompile Include="ClientApp\components\TableView.tsx" />
+    <TypeScriptCompile Include="ClientApp\models\HistoryRecord.ts" />
+    <TypeScriptCompile Include="ClientApp\models\SyncNode.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

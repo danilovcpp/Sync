@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sync.Models;
 
 namespace Sync
 {
@@ -23,6 +24,8 @@ namespace Sync
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
+			services.AddCors();
+			services.AddSingleton<IContext, Context>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +46,11 @@ namespace Sync
 			}
 
 			app.UseStaticFiles();
+			app.UseCors(builder => builder
+			 .AllowAnyOrigin()
+			 .AllowAnyMethod()
+			 .AllowAnyHeader()
+			 .AllowCredentials());
 
 			app.UseMvc(routes =>
 			{
