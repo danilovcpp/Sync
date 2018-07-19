@@ -21,7 +21,7 @@ namespace Sync.Models
 		public void AddComponent(Component component)
 		{
 			Components.Add(component);
-			History.Add(new HistoryRecord { Date = DateTime.Now, Recid = Guid.NewGuid().ToString(), Diff = JToken.FromObject(component).ToString() });
+			//History.Add(new HistoryRecord { Date = DateTime.Now, Recid = Guid.NewGuid().ToString(), Diff = JToken.FromObject(component).ToString() });
 		}
 
 		public List<HistoryRecord> GetHistory(string commitRecid)

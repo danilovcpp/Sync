@@ -5,6 +5,8 @@ export interface SyncNode {
 	host: string;
 	table: string;
 	commit?: string;
+	lastUpdate?: string;
 	pullCount?: number;
+	records?: any[];
 	historyRecords?: HistoryRecord[];
 }

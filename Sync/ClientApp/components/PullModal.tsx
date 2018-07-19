@@ -6,10 +6,10 @@ import { SyncNode } from '../models/SyncNode';
 interface PullModalProps {
 	showModal: boolean;
 	onHide: () => void;
-	historyRecords: HistoryRecord[];
+	//historyRecords: HistoryRecord[];
 	node?: SyncNode;
 	onApply: (node: SyncNode) => void;
-	lastCommit: string;
+	//lastCommit: string;
 }
 
 interface PullModalState {
@@ -34,16 +34,15 @@ export class PullModal extends React.Component<PullModalProps, PullModalState> {
 
 	private handleFetch = (node: SyncNode) => {
 
-		console.log(node);
+		console.log("pullModal: node", node);
 
-		fetch(`http://localhost:65168/sync/component/${this.props.lastCommit}`)
+		fetch(`http://localhost:65168/sync/component/${this.props.node!.lastUpdate!}`)
 			.then(data => data.json())
 			.then(data => {
 				console.log(data);
 				this.setState({ data: data });
 			});
 	}
-
 
 	public render() {
 		return (
@@ -63,73 +62,12 @@ export class PullModal extends React.Component<PullModalProps, PullModalState> {
 							</tr>
 						</thead>
 						<tbody>
-							{this.state.data.map(history => <tr className="success">
+							{this.state.data.map(record => <tr className="success">
 								<td>add</td>
 								<td>component</td>
-								<td>{history.recid}</td>
-								<td>{history.diff}</td>
+								<td>{record.recid}</td>
+								<td>{JSON.stringify(record)}</td>
 							</tr>)}
-							{/*
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>5a0a3273-8fdf-4436-86f5-a9aabe64af24</td>
-								<td>{`{"name": "john doe"}`}</td>
-							</tr>
-							<tr className="warning">
-								<td>update</td>
-								<td>People</td>
-								<td>5a0a3273-8fdf-4436-86f5-a9aabe64af24</td>
-								<td>{`{"name": "john doe1234566"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="danger">
-								<td>delete</td>
-								<td>People</td>
-								<td>5a0a3273-8fdf-4436-86f5-a9aabe64af24</td>
-								<td>{`{"name": "john doe"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>
-							<tr className="success">
-								<td>add</td>
-								<td>People</td>
-								<td>d093f9cc-c7ad-4b57-bffc-b33b3f88ec56</td>
-								<td>{`{"name": "john smith"}`}</td>
-							</tr>*/}
 						</tbody>
 					</Table>
 					<Pager>

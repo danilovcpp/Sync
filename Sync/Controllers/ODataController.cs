@@ -29,6 +29,9 @@ namespace Sync.Controllers
 		[HttpPost("component")]
 		public async Task<IActionResult> Post([FromBody] Component component)
 		{
+			component.RecCreated = DateTime.Now;
+			component.RecUpdated = DateTime.Now;
+
 			_context.AddComponent(component);
 			return Ok();
 		}

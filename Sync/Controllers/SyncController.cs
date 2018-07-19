@@ -34,6 +34,13 @@ namespace Sync.Controllers
 			return Ok(history);
 		}
 
+		[HttpGet("component/{lastUpdate:datetime}")]
+		public async Task<IActionResult> Get(DateTime lastUpdate)
+		{
+			var records = _context.GetComponents().Where(c => c.RecUpdated > lastUpdate);
+			return Ok(records);
+		}
+
 		[HttpGet("component/pull/{commitRecid}")]
 		public async Task<IActionResult> Pull()
 		{

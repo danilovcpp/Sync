@@ -15,6 +15,7 @@ interface SyncState {
 
 	nodes: SyncNode[];
 	lastCommit: string;
+	lastUpdate: string;
 }
 
 export class Sync extends React.Component<{}, SyncState> {
@@ -27,7 +28,8 @@ export class Sync extends React.Component<{}, SyncState> {
 			showPushModal: false,
 			showResolveModal: false,
 			nodes: [],
-			lastCommit: ""
+			lastCommit: "",
+			lastUpdate: "",
 		}
 	}
 
@@ -42,18 +44,24 @@ export class Sync extends React.Component<{}, SyncState> {
 	}
 
 	private handleFetch = (node: SyncNode) => {
-		var url = node.commit == null ? `${node.host}/sync/component` : `${node.host}/sync/component/${node.commit}`;
-		fetch(url)
+
+		if (node.lastUpdate == null) {
+			node.lastUpdate = new Date().toISOString();
+			console.log("node.lastUpdate", node.lastUpdate);
+		}
+
+		fetch(`${node.host}/sync/component/${node.lastUpdate}`)
 			.then(data => data.json())
 			.then(data => {
 				console.log(data);
 
-				var last = node.commit;
+				var lastUpdate = node.lastUpdate;
 
 				node.pullCount = data.length;
-				node.commit = data[data.length - 1].recid;
-				node.historyRecords = data;
-				this.setState({ nodes: [node], lastCommit: last! });
+				//node.lastUpdate = new Date().toISOString();
+				node.records = data;
+				//node.historyRecords = data;
+				this.setState({ nodes: [node], lastUpdate: lastUpdate! });
 			});
 	}
 
@@ -61,11 +69,10 @@ export class Sync extends React.Component<{}, SyncState> {
 		fetch(`sync/component/push`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(node.historyRecords)
+			body: JSON.stringify(node.records)
 		})
 			.then(data => {
-				console.log(data);
-				//node.commit = node.historyRecords![node.historyRecords!.length - 1].recid;
+				node.lastUpdate = new Date().toISOString();
 				node.pullCount = undefined;
 				this.setState({ nodes: [node] });
 			});
@@ -303,7 +310,7 @@ export class Sync extends React.Component<{}, SyncState> {
 					</Table>
 				</div>
 				<SyncModal showModal={this.state.showSyncModal} onHide={() => this.setState({ showSyncModal: false })} onAdd={this.handleAddNode} />
-				<PullModal showModal={this.state.showPullModal} onHide={() => this.setState({ showPullModal: false })} historyRecords={[]} onApply={this.handlePull} node={this.state.nodes[0]} lastCommit={this.state.lastCommit} />
+				<PullModal showModal={this.state.showPullModal} onHide={() => this.setState({ showPullModal: false })} onApply={this.handlePull} node={this.state.nodes[0]} />
 				<PushModal showModal={this.state.showPushModal} onHide={() => this.setState({ showPushModal: false })} />
 				<ResolveModal showModal={this.state.showResolveModal} onHide={() => this.setState({ showResolveModal: false })} />
 			</div>
